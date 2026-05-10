@@ -49,56 +49,50 @@ class ImportJsonPlaceholderCommand extends Command
             "jsonrpc" => "2.0",
         ];
 
-
-        $response = $client->post('/api_web/api.php',
-            [
-                'json' => $params
-            ]);
-        $tasks = json_decode($response->getBody()->getContents(), true);
+            $response = $client->post('/api_web/api.php',
+                [
+                    'json' => $params
+                ]);
+            $applications = json_decode($response->getBody()->getContents(), true);
 
         // Задание 4
-        if (count($tasks['result']) < 2)
-        {
-            $statusCode = $response->getStatusCode();
-//            return response()->json(['error' => 'error'], 500);
-            echo "Недостаточно заявок для выполнения тестового сценария, $statusCode" . PHP_EOL;
-        }
 
-//        try
-//        {
-//            if (count($tasks['result']) < 2)
-//            {
-//                $task2 = $tasks['result'][1];
-//                echo 'taskId => ' . $task2['taskId'] . ', req => ' . $task2['req'] .', caption => '. $task2['caption']. ', status/statusName => ' . $task2['status']['name'] . PHP_EOL;
-//            }
-//        } catch (\Exception $e)
-//        {
-//            return $e->getCode(0);
-//        }
+        try
+        {
+            if (count($applications['result']) < 2)
+            {
+                $application2 = $applications['result'][1];
+                echo 'applicationId => ' . $application2['applicationId'] . ', req => ' . $application2['req'] .', caption => '. $application2['caption']. ', status/statusName => ' . $application2['status']['name'] . PHP_EOL;
+            }
+        } catch (\Exception $e)
+        {
+            echo 'Недостаточно заявок для выполнения тестового сценария';
+            exit(0);
+        }
 
 
         // Задание 5
-        if (count($tasks['result']) > 2) {
-            $task2 = $tasks['result'][1];
-            echo 'taskId => ' . $task2['taskId'] . ', req => ' . $task2['req'] . ', caption => ' . $task2['caption'] . ', status/statusName => ' . $task2['status']['name'] . PHP_EOL;
+        if (count($applications['result']) > 2) {
+            $application2 = $applications['result'][1];
+            echo 'applicationId => ' . $application2['taskId'] . ', req => ' . $application2['req'] . ', caption => ' . $application2['caption'] . ', status/statusName => ' . $application2['status']['name'] . PHP_EOL;
         }
 
         // Задание 6
 
-        // Добавил изображения по адресу ./public/storage/images/
+        // Добавил изображения по адресу /public/storage/images/
 
         // Задание 7
 
         $image1 = '/public/storage/images/Image1.jpg';
         $image2 = '/public/storage/images/Image2.jpg';
-        $task2['image1'] = $image1;
-        $task2['image2'] = $image2;
+        $application2['image1'] = $image1;
+        $application2['image2'] = $image2;
 
         // Задание 8
 
         $fio = 'Вержбовский Олег Вячеславович';
         $datetime = "06.05.2026 17:06";
-        $task2['public_comment'] = "Тестовый комментарий от кандидата: " . $fio . ", " . $datetime;
+        $application2['public_comment'] = "Тестовый комментарий от кандидата: " . $fio . ", " . $datetime;
 
         // Задание 9 (logout)
 
